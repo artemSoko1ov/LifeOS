@@ -6,13 +6,15 @@ import styles from "./AppLayout.module.scss";
 const AppLayout = () => {
 
   return (
-    <div className={styles.appLayout}>
-      <Sidebar />
-      <main>
-        <Header />
+    <div className={styles.layout}>
+      <Header />
 
-        <Outlet />
-      </main>
+      <div className={styles.body}>
+        <Sidebar />
+        <main className={styles.content}>
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 };
