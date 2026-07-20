@@ -1,11 +1,12 @@
 import {Outlet} from "react-router-dom";
 import Sidebar from "@/widgets/Sidebar";
 import Header from "@/widgets/Header";
+import styles from "./AppLayout.module.scss";
 
 const AppLayout = () => {
 
   return (
-    <div className="app-layout">
+    <div className={styles.appLayout}>
       <Sidebar />
       <main>
         <Header />

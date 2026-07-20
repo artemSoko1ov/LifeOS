@@ -1,0 +1,29 @@
+:root {
+  /* colors */
+
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
+
+  --color-border: #e2e8f0;
+
+  --color-primary: #2563eb;
+
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #64748b;
+
+  /* radius */
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  /* shadow */
+
+  --shadow-sm: 0 1px 2px rgb(15 23 42 / 0.05);
+
+  --shadow-md: 0 8px 24px rgb(15 23 42 / 0.08);
+
+  /* font */
+
+  --font-primary: "Inter";
+}

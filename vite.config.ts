@@ -18,7 +18,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        // additionalData: '@use "@/app/styles/helpers" as *;',
+        additionalData: '@use "@/app/styles/helpers" as *;',
         silenceDeprecations: ["legacy-js-api"],
       },
     },
