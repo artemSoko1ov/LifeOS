@@ -3,7 +3,9 @@ import "./Header.module.scss"
 const Header = () => {
   return (
     <header>
-      HEADER
+      <div>
+        <div className="logotype">LifeOS</div>
+      </div>
     </header>
   );
 };

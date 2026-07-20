@@ -1,11 +1,17 @@
 import {Outlet} from "react-router-dom";
+import Sidebar from "@/widgets/Sidebar";
+import Header from "@/widgets/Header";
 
 const AppLayout = () => {
 
   return (
     <div className="app-layout">
-      <h1>APP LAYOUT</h1>
-      <Outlet />
+      <Sidebar />
+      <main>
+        <Header />
+
+        <Outlet />
+      </main>
     </div>
   );
 };
