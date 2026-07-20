@@ -1,12 +1,9 @@
-import "@/shared/styles/globals.css";
+import {AppLayout} from "@/app/layouts/AppLayout";
+
 
 function App() {
 
-  return (
-    <>
-      <h1>LifeOS</h1>
-    </>
-  )
+  return <AppLayout />
 }
 
 export default App
