@@ -1,3 +1,5 @@
+import "@/shared/styles/globals.css";
+
 function App() {
 
   return (
