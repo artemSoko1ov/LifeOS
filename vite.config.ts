@@ -1,7 +1,23 @@
-import { defineConfig } from 'vite'
+import { fileURLToPath, URL } from "node:url";
+import { defineConfig } from "vite";
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+  ],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: '@use "@/app/styles/helpers" as *;',
+        silenceDeprecations: ["legacy-js-api"],
+      },
+    },
+  },
+  resolve: {
+    alias: {
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+    },
+    tsconfigPaths: true,
+  },
 })
