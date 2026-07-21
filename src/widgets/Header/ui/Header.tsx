@@ -1,11 +1,9 @@
-import "./Header.module.scss"
+import styles from "./Header.module.scss"
 
 const Header = () => {
   return (
-    <header>
-      <div>
-        <div className="logotype">LifeOS</div>
-      </div>
+    <header className={styles.header}>
+        <div className={styles.logotype}>LifeOS</div>
     </header>
   );
 };
