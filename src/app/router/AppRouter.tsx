@@ -1,5 +1,5 @@
 import {Routes, Route} from "react-router-dom";
-import DashboardPage from "@/pages/dashboard/DashboardPage";
+import DashboardPage from "@/pages/dashboard";
 import TasksPage from "@/pages/tasks/TasksPage";
 import WorkoutsPage from "@/pages/workouts/WorkoutsPage";
 import GoalsPage from "@/pages/goals/GoalsPage";
