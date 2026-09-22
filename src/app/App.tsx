@@ -1,7 +1,14 @@
+import { Outlet } from 'react-router-dom';
+import Sidebar from '@/widgets/Sidebar';
+import './styles/globals.scss'
+
 function App() {
   return (
     <>
-      <h1>LifeOS</h1>
+      <Sidebar />
+      <main>
+        <Outlet />
+      </main>
     </>
   );
 }
