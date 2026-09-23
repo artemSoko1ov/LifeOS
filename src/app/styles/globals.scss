@@ -69,3 +69,11 @@ svg {
   display: block;
   max-width: 100%;
 }
+
+#root {
+  display: flex;
+}
+
+main {
+  padding: var(--space-6);
+}
