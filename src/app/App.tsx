@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import Sidebar from '@/widgets/Sidebar';
-import './styles/globals.scss'
+import './styles/globals.scss';
 
 function App() {
   return (

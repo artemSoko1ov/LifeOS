@@ -1,5 +1,7 @@
+import TaskList from '@/widgets/TaskList/ui/TaskList.tsx';
+
 const TodayPage = () => {
-  return <div>Today Page</div>;
+  return <TaskList />;
 };
 
 export default TodayPage;
