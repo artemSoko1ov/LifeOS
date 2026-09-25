@@ -3,7 +3,7 @@ import Sidebar from '@/widgets/Sidebar';
 import './styles/globals.scss';
 import Header from '@/widgets/Header';
 import { useState } from 'react';
-import TaskCreateModal from '@/widgets/TaskCreateModal/ui/TaskCreateModal.tsx';
+import TaskCreateModal from '@/features/TaskCreate/ui/TaskCreateModal.tsx';
 
 function App() {
   const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false);

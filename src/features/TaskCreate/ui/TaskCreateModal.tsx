@@ -1,9 +1,7 @@
 import { type FormEvent, useState } from 'react';
-
 import Button from '@/shared/ui/Button';
-
 import styles from './TaskCreateModal.module.scss';
-import { useCreateTask } from '@/widgets/TaskCreateModal/model/useCreateTask.ts';
+import { useTaskStore } from '@/entities/Task/model/store.ts';
 
 type Props = {
   isOpen: boolean;
@@ -11,7 +9,10 @@ type Props = {
 };
 
 const TaskCreateModal = ({ isOpen, onClose }: Props) => {
-  const { createTask, loading, error } = useCreateTask();
+  const createTask = useTaskStore((state) => state.createTask);
+  const loading = useTaskStore((state) => state.loading);
+  const error = useTaskStore((state) => state.error);
+
   const [title, setTitle] = useState('');
 
   if (!isOpen) {
