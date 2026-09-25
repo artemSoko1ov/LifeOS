@@ -1,7 +1,6 @@
 import { useTasks } from '../model/useTasks';
 import TaskItem from '@/entities/Task';
 import styles from './TaskList.module.scss';
-import Button from '@/shared/ui/Button';
 
 const TaskList = () => {
   const { tasks, loading, error } = useTasks();
@@ -19,7 +18,6 @@ const TaskList = () => {
       {tasks.map((task) => (
         <TaskItem key={task.ID} task={task} />
       ))}
-      <Button onClick={() => alert(1)}>Add task</Button>
     </section>
   );
 };

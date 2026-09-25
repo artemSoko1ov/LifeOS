@@ -11,6 +11,9 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <TodayPage />,
+        handle: {
+          title: 'Сегодня',
+        },
       },
       {
         path: '*',
