@@ -1,8 +1,9 @@
-import type { FormEvent } from 'react';
+import { type FormEvent, useState } from 'react';
 
 import Button from '@/shared/ui/Button';
 
 import styles from './TaskCreateModal.module.scss';
+import { useCreateTask } from '@/widgets/TaskCreateModal/model/useCreateTask.ts';
 
 type Props = {
   isOpen: boolean;
@@ -10,12 +11,26 @@ type Props = {
 };
 
 const TaskCreateModal = ({ isOpen, onClose }: Props) => {
+  const { createTask, loading, error } = useCreateTask();
+  const [title, setTitle] = useState('');
+
   if (!isOpen) {
     return null;
   }
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (!title.trim()) {
+      return;
+    }
+
+    const success = await createTask(title);
+
+    if (success) {
+      setTitle('');
+      onClose();
+    }
   };
 
   return (
@@ -45,6 +60,8 @@ const TaskCreateModal = ({ isOpen, onClose }: Props) => {
               type="text"
               name="title"
               placeholder="Например, изучить Go"
+              onChange={(event) => setTitle(event.target.value)}
+              value={title}
               autoFocus
             />
           </label>
@@ -54,9 +71,12 @@ const TaskCreateModal = ({ isOpen, onClose }: Props) => {
               Отмена
             </Button>
 
-            <Button type="submit">Создать</Button>
+            <Button type="submit" disabled={loading}>
+              {loading ? 'Загрузка...' : 'Создать'}
+            </Button>
           </div>
         </form>
+        {error && <p>{error}</p>}
       </div>
     </div>
   );
