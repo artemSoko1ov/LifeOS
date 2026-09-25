@@ -8,7 +8,11 @@ type RouteHandle = {
   title?: string;
 };
 
-const Header = () => {
+type Props = {
+  onAddTask: () => void;
+};
+
+const Header = ({ onAddTask }: Props) => {
   const matches = useMatches();
 
   const currentRoute = matches.at(-1);
@@ -18,7 +22,7 @@ const Header = () => {
     <header className={styles.header}>
       <h1 className={styles.title}>{title}</h1>
 
-      <Button>Add task</Button>
+      <Button onClick={onAddTask}>Add task</Button>
     </header>
   );
 };
