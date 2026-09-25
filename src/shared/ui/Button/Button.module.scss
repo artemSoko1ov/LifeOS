@@ -1,0 +1,27 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 40px;
+  padding: 0 var(--space-4);
+
+  border-radius: var(--radius-md);
+
+  color: #ffffff;
+  background-color: var(--color-accent);
+
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: var(--color-accent-hover);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
