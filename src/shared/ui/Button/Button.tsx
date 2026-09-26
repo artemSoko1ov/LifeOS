@@ -1,6 +1,6 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
-
 import styles from './Button.module.scss';
+import clsx from 'clsx';
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   children: ReactNode;
@@ -8,7 +8,7 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 const Button = ({ children, className, ...props }: Props) => {
   return (
-    <button className={`${styles.button} ${className ?? ''}`} {...props}>
+    <button className={clsx(styles.button, className)} {...props}>
       {children}
     </button>
   );

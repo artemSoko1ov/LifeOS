@@ -1,24 +1,24 @@
 import TaskItem from '@/entities/Task';
 import styles from './TaskList.module.scss';
-import { useTaskStore } from '@/entities/Task/model/store.ts';
+import { useTaskStore } from '@/entities/Task';
 
 const TaskList = () => {
   const tasks = useTaskStore((state) => state.tasks);
-  const loading = useTaskStore((state) => state.loading);
-  const error = useTaskStore((state) => state.error);
+  const isFetching = useTaskStore((state) => state.isFetching);
+  const fetchError = useTaskStore((state) => state.fetchError);
 
-  if (loading) {
+  if (isFetching) {
     return <p>Загрузка...</p>;
   }
 
-  if (error) {
+  if (fetchError) {
     return <p>Не удалось загрузить задачи.</p>;
   }
 
   return (
     <section className={styles.list}>
       {tasks.map((task) => (
-        <TaskItem key={task.ID} task={task} />
+        <TaskItem key={task.id} task={task} />
       ))}
     </section>
   );

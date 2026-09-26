@@ -1,4 +1,4 @@
-export const sidebarLinks = [
+export const navigationLinks = [
   {
     label: 'Today',
     href: '/',

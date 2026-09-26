@@ -1,7 +1,7 @@
 import { type FormEvent, useState } from 'react';
 import Button from '@/shared/ui/Button';
 import styles from './TaskCreateModal.module.scss';
-import { useTaskStore } from '@/entities/Task/model/store.ts';
+import { useTaskStore } from '@/entities/Task';
 
 type Props = {
   isOpen: boolean;
@@ -10,8 +10,8 @@ type Props = {
 
 const TaskCreateModal = ({ isOpen, onClose }: Props) => {
   const createTask = useTaskStore((state) => state.createTask);
-  const loading = useTaskStore((state) => state.loading);
-  const error = useTaskStore((state) => state.error);
+  const isCreating = useTaskStore((state) => state.isCreating);
+  const createError = useTaskStore((state) => state.createError);
 
   const [title, setTitle] = useState('');
 
@@ -26,9 +26,9 @@ const TaskCreateModal = ({ isOpen, onClose }: Props) => {
       return;
     }
 
-    const success = await createTask(title);
+    const task = await createTask(title.trim());
 
-    if (success) {
+    if (task) {
       setTitle('');
       onClose();
     }
@@ -63,6 +63,7 @@ const TaskCreateModal = ({ isOpen, onClose }: Props) => {
               placeholder="Например, изучить Go"
               onChange={(event) => setTitle(event.target.value)}
               value={title}
+              disabled={isCreating}
               autoFocus
             />
           </label>
@@ -72,12 +73,12 @@ const TaskCreateModal = ({ isOpen, onClose }: Props) => {
               Отмена
             </Button>
 
-            <Button type="submit" disabled={loading}>
-              {loading ? 'Загрузка...' : 'Создать'}
+            <Button type="submit" disabled={isCreating}>
+              {isCreating ? 'Загрузка...' : 'Создать'}
             </Button>
           </div>
         </form>
-        {error && <p>{error}</p>}
+        {createError && <p>{createError}</p>}
       </div>
     </div>
   );

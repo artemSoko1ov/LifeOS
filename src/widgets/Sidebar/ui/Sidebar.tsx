@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import clsx from 'clsx';
-import { sidebarLinks } from '../model/sidebarLinks';
+import { navigationLinks } from '../model/navigationLinks';
 import styles from './Sidebar.module.scss';
 
 const Sidebar = () => {
@@ -10,7 +10,7 @@ const Sidebar = () => {
 
       <nav className={styles.nav}>
         <ul className={styles.list}>
-          {sidebarLinks.map(({ label, href }) => (
+          {navigationLinks.map(({ label, href }) => (
             <li key={href}>
               <NavLink
                 to={href}

@@ -1,7 +1,5 @@
 import { useMatches } from 'react-router-dom';
-
 import Button from '@/shared/ui/Button/Button';
-
 import styles from './Header.module.scss';
 
 type RouteHandle = {

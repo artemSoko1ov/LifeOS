@@ -4,41 +4,52 @@ import type { Task } from './types';
 
 type TaskStore = {
   tasks: Task[];
-  loading: boolean;
-  error: string | null;
+
+  isFetching: boolean;
+  fetchError: string | null;
+
+  isCreating: boolean;
+  createError: string | null;
 
   fetchTasks: () => Promise<void>;
-  createTask: (title: string) => Promise<boolean>;
+  createTask: (title: string) => Promise<Task | null>;
 };
 
 export const useTaskStore = create<TaskStore>((set) => ({
   tasks: [],
-  loading: false,
-  error: null,
+  isFetching: false,
+  fetchError: null,
+  isCreating: false,
+  createError: null,
 
   fetchTasks: async () => {
     try {
-      set({ loading: true, error: null });
+      set({ isFetching: true, fetchError: null });
 
-      const tasks = await api('/tasks');
+      const tasks = await api<Task[]>('/tasks');
 
       set({
         tasks,
-        loading: false,
       });
     } catch {
       set({
-        error: 'Не удалось загрузить задачи',
-        loading: false,
+        fetchError: 'Не удалось загрузить задачи',
+      });
+    } finally {
+      set({
+        isFetching: false,
       });
     }
   },
 
   createTask: async (title) => {
     try {
-      set({ error: null });
+      set({
+        isCreating: true,
+        createError: null,
+      });
 
-      const task = await api('/tasks', {
+      const task = await api<Task>('/tasks', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -50,13 +61,17 @@ export const useTaskStore = create<TaskStore>((set) => ({
         tasks: [...state.tasks, task],
       }));
 
-      return true;
+      return task;
     } catch {
       set({
-        error: 'Не удалось создать задачу',
+        createError: 'Не удалось создать задачу',
       });
 
-      return false;
+      return null;
+    } finally {
+      set({
+        isCreating: false,
+      });
     }
   },
 }));

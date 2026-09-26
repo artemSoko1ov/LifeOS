@@ -1,12 +1,12 @@
-import TaskList from '@/widgets/TaskList/ui/TaskList.tsx';
 import { useEffect } from 'react';
-import { useTaskStore } from '@/entities/Task/model/store.ts';
+import TaskList from '@/widgets/TaskList';
+import { useTaskStore } from '@/entities/Task';
 
 const TodayPage = () => {
   const fetchTasks = useTaskStore((state) => state.fetchTasks);
 
   useEffect(() => {
-    fetchTasks();
+    void fetchTasks();
   }, [fetchTasks]);
 
   return <TaskList />;

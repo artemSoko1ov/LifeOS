@@ -1,5 +1,4 @@
 import type { Task } from '../model/types';
-
 import styles from './TaskItem.module.scss';
 
 type Props = {
@@ -12,11 +11,11 @@ const TaskItem = ({ task }: Props) => {
       <input
         className={styles.checkbox}
         type="checkbox"
-        checked={task.Completed}
+        checked={task.completed}
         readOnly
       />
 
-      <span className={styles.title}>{task.Title}</span>
+      <span className={styles.title}>{task.title}</span>
     </article>
   );
 };

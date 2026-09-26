@@ -1,9 +1,9 @@
 import { Outlet } from 'react-router-dom';
 import Sidebar from '@/widgets/Sidebar';
-import './styles/globals.scss';
+import './styles';
 import Header from '@/widgets/Header';
 import { useState } from 'react';
-import TaskCreateModal from '@/features/TaskCreate/ui/TaskCreateModal.tsx';
+import TaskCreateModal from '@/features/CreateTask';
 
 function App() {
   const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false);
