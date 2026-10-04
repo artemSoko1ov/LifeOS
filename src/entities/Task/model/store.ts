@@ -14,6 +14,9 @@ type TaskStore = {
   isEditing: boolean;
   editError: string | null;
 
+  isDeleting: boolean;
+  deleteError: string | null;
+
   fetchTasks: () => Promise<void>;
   createTask: (title: string) => Promise<Task | null>;
   editTask: (
@@ -21,6 +24,7 @@ type TaskStore = {
     title?: string,
     completed?: boolean,
   ) => Promise<Task | null>;
+  deleteTask: (id: string) => Promise<Task | null>;
 };
 
 export const useTaskStore = create<TaskStore>((set) => ({
@@ -31,6 +35,8 @@ export const useTaskStore = create<TaskStore>((set) => ({
   createError: null,
   isEditing: false,
   editError: null,
+  isDeleting: false,
+  deleteError: null,
 
   fetchTasks: async () => {
     try {
@@ -114,6 +120,34 @@ export const useTaskStore = create<TaskStore>((set) => ({
     } finally {
       set({
         isEditing: false,
+      });
+    }
+  },
+  deleteTask: async (id) => {
+    try {
+      set({
+        isDeleting: true,
+        deleteError: null,
+      });
+
+      const task = await api<Task>(`/tasks/${id}`, {
+        method: 'DELETE',
+      });
+
+      set((state) => ({
+        tasks: state.tasks.filter((item) => item.id !== task.id),
+      }));
+
+      return task;
+    } catch {
+      set({
+        deleteError: 'Не удалось удалить задачу',
+      });
+
+      return null;
+    } finally {
+      set({
+        isDeleting: false,
       });
     }
   },
