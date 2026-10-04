@@ -11,8 +11,16 @@ type TaskStore = {
   isCreating: boolean;
   createError: string | null;
 
+  isEditing: boolean;
+  editError: string | null;
+
   fetchTasks: () => Promise<void>;
   createTask: (title: string) => Promise<Task | null>;
+  editTask: (
+    id: string,
+    title?: string,
+    completed?: boolean,
+  ) => Promise<Task | null>;
 };
 
 export const useTaskStore = create<TaskStore>((set) => ({
@@ -21,6 +29,8 @@ export const useTaskStore = create<TaskStore>((set) => ({
   fetchError: null,
   isCreating: false,
   createError: null,
+  isEditing: false,
+  editError: null,
 
   fetchTasks: async () => {
     try {
@@ -71,6 +81,39 @@ export const useTaskStore = create<TaskStore>((set) => ({
     } finally {
       set({
         isCreating: false,
+      });
+    }
+  },
+
+  editTask: async (id, title, completed) => {
+    try {
+      set({
+        isEditing: true,
+        editError: null,
+      });
+
+      const task = await api<Task>(`/tasks/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ title, completed }),
+      });
+
+      set((state) => ({
+        tasks: state.tasks.map((item) => (item.id === task.id ? task : item)),
+      }));
+
+      return task;
+    } catch {
+      set({
+        editError: 'Не удалось отредактировать задачу',
+      });
+
+      return null;
+    } finally {
+      set({
+        isEditing: false,
       });
     }
   },
