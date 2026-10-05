@@ -2,58 +2,87 @@ import { create } from 'zustand';
 import { api } from '@/shared/api';
 import type { Task } from './types';
 
+type TaskUpdate = {
+  title?: string;
+  completed?: boolean;
+};
+
 type TaskStore = {
   tasks: Task[];
 
-  isFetching: boolean;
-  fetchError: string | null;
+  fetch: {
+    isLoading: boolean;
+    error: string | null;
+  };
 
-  isCreating: boolean;
-  createError: string | null;
+  create: {
+    isLoading: boolean;
+    error: string | null;
+  };
 
-  isEditing: boolean;
-  editError: string | null;
+  update: {
+    isLoading: boolean;
+    error: string | null;
+  };
 
-  isDeleting: boolean;
-  deleteError: string | null;
+  delete: {
+    isLoading: boolean;
+    error: string | null;
+  };
 
   fetchTasks: () => Promise<void>;
   createTask: (title: string) => Promise<Task | null>;
-  editTask: (
-    id: string,
-    title?: string,
-    completed?: boolean,
-  ) => Promise<Task | null>;
+  updateTask: (id: string, data: TaskUpdate) => Promise<Task | null>;
   deleteTask: (id: string) => Promise<Task | null>;
 };
 
 export const useTaskStore = create<TaskStore>((set) => ({
   tasks: [],
-  isFetching: false,
-  fetchError: null,
-  isCreating: false,
-  createError: null,
-  isEditing: false,
-  editError: null,
-  isDeleting: false,
-  deleteError: null,
+
+  fetch: {
+    isLoading: false,
+    error: null,
+  },
+
+  create: {
+    isLoading: false,
+    error: null,
+  },
+
+  update: {
+    isLoading: false,
+    error: null,
+  },
+
+  delete: {
+    isLoading: false,
+    error: null,
+  },
 
   fetchTasks: async () => {
     try {
-      set({ isFetching: true, fetchError: null });
+      set({
+        fetch: {
+          isLoading: true,
+          error: null,
+        },
+      });
 
       const tasks = await api<Task[]>('/tasks');
 
       set({
         tasks,
+        fetch: {
+          isLoading: false,
+          error: null,
+        },
       });
     } catch {
       set({
-        fetchError: 'Не удалось загрузить задачи',
-      });
-    } finally {
-      set({
-        isFetching: false,
+        fetch: {
+          isLoading: false,
+          error: 'Не удалось загрузить задачи',
+        },
       });
     }
   },
@@ -61,8 +90,10 @@ export const useTaskStore = create<TaskStore>((set) => ({
   createTask: async (title) => {
     try {
       set({
-        isCreating: true,
-        createError: null,
+        create: {
+          isLoading: true,
+          error: null,
+        },
       });
 
       const task = await api<Task>('/tasks', {
@@ -75,27 +106,32 @@ export const useTaskStore = create<TaskStore>((set) => ({
 
       set((state) => ({
         tasks: [...state.tasks, task],
+        create: {
+          isLoading: false,
+          error: null,
+        },
       }));
 
       return task;
     } catch {
       set({
-        createError: 'Не удалось создать задачу',
+        create: {
+          isLoading: false,
+          error: 'Не удалось создать задачу',
+        },
       });
 
       return null;
-    } finally {
-      set({
-        isCreating: false,
-      });
     }
   },
 
-  editTask: async (id, title, completed) => {
+  updateTask: async (id, data) => {
     try {
       set({
-        isEditing: true,
-        editError: null,
+        update: {
+          isLoading: true,
+          error: null,
+        },
       });
 
       const task = await api<Task>(`/tasks/${id}`, {
@@ -103,31 +139,37 @@ export const useTaskStore = create<TaskStore>((set) => ({
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ title, completed }),
+        body: JSON.stringify(data),
       });
 
       set((state) => ({
         tasks: state.tasks.map((item) => (item.id === task.id ? task : item)),
+        update: {
+          isLoading: false,
+          error: null,
+        },
       }));
 
       return task;
     } catch {
       set({
-        editError: 'Не удалось отредактировать задачу',
+        update: {
+          isLoading: false,
+          error: 'Не удалось обновить задачу',
+        },
       });
 
       return null;
-    } finally {
-      set({
-        isEditing: false,
-      });
     }
   },
+
   deleteTask: async (id) => {
     try {
       set({
-        isDeleting: true,
-        deleteError: null,
+        delete: {
+          isLoading: true,
+          error: null,
+        },
       });
 
       const task = await api<Task>(`/tasks/${id}`, {
@@ -136,19 +178,22 @@ export const useTaskStore = create<TaskStore>((set) => ({
 
       set((state) => ({
         tasks: state.tasks.filter((item) => item.id !== task.id),
+        delete: {
+          isLoading: false,
+          error: null,
+        },
       }));
 
       return task;
     } catch {
       set({
-        deleteError: 'Не удалось удалить задачу',
+        delete: {
+          isLoading: false,
+          error: 'Не удалось удалить задачу',
+        },
       });
 
       return null;
-    } finally {
-      set({
-        isDeleting: false,
-      });
     }
   },
 }));

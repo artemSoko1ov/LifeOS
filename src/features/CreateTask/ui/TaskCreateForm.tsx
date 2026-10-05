@@ -11,8 +11,8 @@ type Props = {
 
 const TaskCreateForm = ({ isOpen, onClose }: Props) => {
   const createTask = useTaskStore((state) => state.createTask);
-  const isCreating = useTaskStore((state) => state.isCreating);
-  const createError = useTaskStore((state) => state.createError);
+  const isLoading = useTaskStore((state) => state.create.isLoading);
+  const error = useTaskStore((state) => state.create.error);
 
   const [title, setTitle] = useState('');
 
@@ -43,7 +43,7 @@ const TaskCreateForm = ({ isOpen, onClose }: Props) => {
             placeholder="Например, изучить Go"
             onChange={(event) => setTitle(event.target.value)}
             value={title}
-            disabled={isCreating}
+            disabled={isLoading}
             autoFocus
           />
         </label>
@@ -53,12 +53,12 @@ const TaskCreateForm = ({ isOpen, onClose }: Props) => {
             Отмена
           </Button>
 
-          <Button type="submit" disabled={isCreating}>
-            {isCreating ? 'Загрузка...' : 'Создать'}
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? 'Загрузка...' : 'Создать'}
           </Button>
         </div>
 
-        {createError && <p>{createError}</p>}
+        {error && <p>{error}</p>}
       </form>
     </Modal>
   );

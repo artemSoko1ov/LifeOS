@@ -13,9 +13,9 @@ type Props = {
 };
 
 const TaskEditForm = ({ isOpen, onClose, id, title, completed }: Props) => {
-  const editTask = useTaskStore((state) => state.editTask);
-  const isEditing = useTaskStore((state) => state.isEditing);
-  const editError = useTaskStore((state) => state.editError);
+  const updateTask = useTaskStore((state) => state.updateTask);
+  const isLoading = useTaskStore((state) => state.update.isLoading);
+  const error = useTaskStore((state) => state.update.error);
 
   const [newTitle, setNewTitle] = useState(title);
   const [newCompleted, setNewCompleted] = useState(completed);
@@ -33,7 +33,10 @@ const TaskEditForm = ({ isOpen, onClose, id, title, completed }: Props) => {
       return;
     }
 
-    const task = await editTask(id, trimmedTitle, newCompleted);
+    const task = await updateTask(id, {
+      title: trimmedTitle,
+      completed: newCompleted,
+    });
 
     if (task) {
       onClose();
@@ -52,7 +55,7 @@ const TaskEditForm = ({ isOpen, onClose, id, title, completed }: Props) => {
             placeholder="Например, изучить Go"
             onChange={(event) => setNewTitle(event.target.value)}
             value={newTitle}
-            disabled={isEditing}
+            disabled={isLoading}
             autoFocus
           />
         </label>
@@ -64,7 +67,7 @@ const TaskEditForm = ({ isOpen, onClose, id, title, completed }: Props) => {
             name="completed"
             checked={newCompleted}
             onChange={(event) => setNewCompleted(event.target.checked)}
-            disabled={isEditing}
+            disabled={isLoading}
           />
         </label>
 
@@ -73,12 +76,12 @@ const TaskEditForm = ({ isOpen, onClose, id, title, completed }: Props) => {
             Отмена
           </Button>
 
-          <Button type="submit" disabled={isEditing}>
-            {isEditing ? 'Загрузка...' : 'Редактировать'}
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? 'Загрузка...' : 'Редактировать'}
           </Button>
         </div>
 
-        {editError && <p>{editError}</p>}
+        {error && <p>{error}</p>}
       </form>
     </Modal>
   );
