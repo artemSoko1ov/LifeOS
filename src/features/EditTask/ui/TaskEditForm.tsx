@@ -23,11 +23,17 @@ const TaskEditForm = ({ isOpen, onClose, id, title, completed }: Props) => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!newTitle.trim()) {
+    const trimmedTitle = newTitle.trim();
+
+    if (!trimmedTitle) {
       return;
     }
 
-    const task = await editTask(id, newTitle.trim(), newCompleted);
+    if (trimmedTitle === title.trim() && newCompleted === completed) {
+      return;
+    }
+
+    const task = await editTask(id, trimmedTitle, newCompleted);
 
     if (task) {
       onClose();
@@ -35,7 +41,7 @@ const TaskEditForm = ({ isOpen, onClose, id, title, completed }: Props) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Edit Task">
+    <Modal isOpen={isOpen} onClose={onClose} title="Редактирование задачи">
       <form className={styles.form} onSubmit={handleSubmit}>
         <label className={styles.label}>
           Название задачи
@@ -53,7 +59,7 @@ const TaskEditForm = ({ isOpen, onClose, id, title, completed }: Props) => {
         <label className={styles.label}>
           Выполнение задачи
           <input
-            className={styles.input}
+            className={styles.checkbox}
             type="checkbox"
             name="completed"
             checked={newCompleted}
