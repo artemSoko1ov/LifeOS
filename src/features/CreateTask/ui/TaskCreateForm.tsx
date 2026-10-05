@@ -16,10 +16,6 @@ const TaskCreateForm = ({ isOpen, onClose }: Props) => {
 
   const [title, setTitle] = useState('');
 
-  if (!isOpen) {
-    return null;
-  }
-
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
