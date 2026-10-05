@@ -1,63 +1,40 @@
 import type { Task } from '../model/types';
 import styles from './TaskItem.module.scss';
-import { useTaskStore } from '@/entities/Task';
 import Button from '@/shared/ui/Button';
-import TaskEditForm from '@/features/EditTask';
-import { useState } from 'react';
 
 type Props = {
   task: Task;
+  onEdit: (task: Task) => void;
+  onDelete: (id: string) => void;
+  onToggle: (task: Task) => void;
 };
 
-const TaskItem = ({ task }: Props) => {
-  const isEditing = useTaskStore((state) => state.isEditing);
-  const editTask = useTaskStore((state) => state.editTask);
-  const deleteTask = useTaskStore((state) => state.deleteTask);
-
-  const [isEditOpen, setIsEditOpen] = useState(false);
-
-  const handleToggle = () => {
-    void editTask(task.id, undefined, !task.completed);
-  };
-
-  const handleDelete = () => {
-    void deleteTask(task.id);
-  };
-
+const TaskItem = ({ task, onEdit, onDelete, onToggle }: Props) => {
   return (
     <article className={styles.task}>
       <input
         className={styles.checkbox}
         type="checkbox"
         checked={task.completed}
-        onChange={handleToggle}
-        disabled={isEditing}
+        onChange={() => onToggle(task)}
       />
       <span className={styles.title}>{task.title}</span>
       <div className={styles.actions}>
         <Button
           type="button"
           className={styles.buttonEdit}
-          onClick={() => setIsEditOpen(true)}
+          onClick={() => onEdit(task)}
         >
           ✎
         </Button>
         <Button
           type="button"
           className={styles.buttonDelete}
-          onClick={handleDelete}
+          onClick={() => onDelete(task.id)}
         >
           🗑
         </Button>
       </div>
-
-      <TaskEditForm
-        isOpen={isEditOpen}
-        onClose={() => setIsEditOpen(false)}
-        id={task.id}
-        title={task.title}
-        completed={task.completed}
-      />
     </article>
   );
 };
