@@ -3,7 +3,7 @@ import Sidebar from '@/widgets/Sidebar';
 import './styles';
 import Header from '@/widgets/Header';
 import { useState } from 'react';
-import TaskCreateModal from '@/features/CreateTask';
+import TaskCreateForm from '@/features/CreateTask';
 
 function App() {
   const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false);
@@ -15,7 +15,7 @@ function App() {
         <Header onAddTask={() => setIsCreateTaskOpen(true)} />
         <Outlet />
       </main>
-      <TaskCreateModal
+      <TaskCreateForm
         isOpen={isCreateTaskOpen}
         onClose={() => setIsCreateTaskOpen(false)}
       />
