@@ -12,11 +12,16 @@ type Props = {
 const TaskItem = ({ task }: Props) => {
   const isEditing = useTaskStore((state) => state.isEditing);
   const editTask = useTaskStore((state) => state.editTask);
+  const deleteTask = useTaskStore((state) => state.deleteTask);
 
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   const handleToggle = () => {
-    editTask(task.id, undefined, !task.completed);
+    void editTask(task.id, undefined, !task.completed);
+  };
+
+  const handleDelete = () => {
+    void deleteTask(task.id);
   };
 
   return (
@@ -28,12 +33,23 @@ const TaskItem = ({ task }: Props) => {
         onChange={handleToggle}
         disabled={isEditing}
       />
-
       <span className={styles.title}>{task.title}</span>
-
-      <Button className={styles.buttonEdit} onClick={() => setIsEditOpen(true)}>
-        ✎
-      </Button>
+      <div className={styles.actions}>
+        <Button
+          type="button"
+          className={styles.buttonEdit}
+          onClick={() => setIsEditOpen(true)}
+        >
+          ✎
+        </Button>
+        <Button
+          type="button"
+          className={styles.buttonDelete}
+          onClick={handleDelete}
+        >
+          🗑
+        </Button>
+      </div>
 
       <TaskEditForm
         isOpen={isEditOpen}
